@@ -1,0 +1,45 @@
+{
+  "name": "listing-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "description": "1688 → 小红书 一件代发自动化 MVP（Next.js + Express + Playwright + PostgreSQL + DeepSeek）",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev -w web",
+    "dev:api": "npm run dev -w api",
+    "dev:lifestyle": "node scripts/start-lifestyle.mjs",
+    "dev:lifestyle:hot": "node scripts/start-lifestyle-dev.mjs",
+    "build:lifestyle": "node scripts/build-lifestyle.mjs",
+    "build": "npm run db:generate && npm run build -w web && npm run build -w api",
+    "db:generate": "npm run generate -w database",
+    "db:migrate": "npm run migrate:dev -w database",
+    "db:studio": "npm run studio -w database",
+    "automation": "npm run start -w automation",
+    "dev:virtue": "npm run dev -w virtue-tracker",
+    "build:virtue": "npm run build:mobile -w virtue-tracker",
+    "dev:diary": "npm run dev -w diary",
+    "start:diary": "node scripts/start-diary.mjs",
+    "dev:diary-new": "npm run dev -w diary-standalone",
+    "start:diary-new": "node scripts/start-diary-new.mjs",
+    "dev:daily-journal": "npm run dev -w daily-journal",
+    "start:daily-journal": "node scripts/start-daily-journal.mjs",
+    "build:daily-journal": "npm run build -w daily-journal",
+    "dev:ledger": "npm run dev -w ledger",
+    "dev:notes": "npm run dev -w notes",
+    "dev:copywriter": "npm run dev -w copywriter",
+    "dev:reading-list": "npm run dev -w reading-list",
+    "dev:ip-builder": "npm run dev -w ip-builder",
+    "dev:channel": "npm run dev -w channel",
+    "dev:bucket-list": "npm run dev -w bucket-list",
+    "dev:memos": "npm run dev -w memos"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "selfsigned": "^5.5.0"
+  }
+}

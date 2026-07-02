@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="112" fill="#FFFFFF"/>
+  <!-- 阅读书单：打开的书 -->
+  <g fill="#FF9F43" transform="translate(256, 256)">
+    <path d="M-98 -112 C-98 -120 -90 -124 -82 -124 L-8 -124 C0 -124 6 -118 6 -110 L6 110 C6 118 0 124 -8 124 L-82 124 C-90 124 -98 118 -98 110 Z"/>
+    <path d="M6 -112 C6 -120 14 -124 22 -124 L96 -124 C104 -124 110 -118 110 -110 L110 110 C110 118 104 124 96 124 L22 124 C14 124 6 118 6 110 Z"/>
+  </g>
+</svg>
