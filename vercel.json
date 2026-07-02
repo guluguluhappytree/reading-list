@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npm run icons -w reading-list && npm run build -w reading-list",
+  "outputDirectory": "apps/reading-list/dist",
+  "installCommand": "npm install",
+  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false
+}

@@ -44,3 +44,5 @@ playwright/.cache
 # Misc
 coverage
 .turbo
+.vercel
+.env*
