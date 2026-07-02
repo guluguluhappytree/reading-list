@@ -31,6 +31,7 @@
     "dev:notes": "npm run dev -w notes",
     "dev:copywriter": "npm run dev -w copywriter",
     "dev:reading-list": "npm run dev -w reading-list",
+    "start:reading-list": "node scripts/start-reading-list.mjs",
     "dev:ip-builder": "npm run dev -w ip-builder",
     "dev:channel": "npm run dev -w channel",
     "dev:bucket-list": "npm run dev -w bucket-list",

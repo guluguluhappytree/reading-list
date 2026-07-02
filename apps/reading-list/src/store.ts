@@ -237,5 +237,6 @@ export function useReadingStore() {
     addBook,
     removeBook,
     regenerateList,
+    replaceState: setState,
   };
 }
