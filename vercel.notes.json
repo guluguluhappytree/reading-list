@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npm run icons -w notes && npm run build -w notes",
+  "outputDirectory": "apps/notes/dist",
+  "installCommand": "npm install",
+  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false
+}
