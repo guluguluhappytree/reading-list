@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="112" fill="#111111"/>
+  <!-- 美德训练：打卡勾 ✓ -->
+  <g transform="translate(256, 256)">
+    <circle cx="0" cy="0" r="108" stroke="#FFFFFF" stroke-width="26" fill="none"/>
+    <path
+      d="M-52 4 L-12 48 L72 -56"
+      stroke="#FFFFFF"
+      stroke-width="28"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+    />
+  </g>
+</svg>

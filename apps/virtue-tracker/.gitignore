@@ -1,0 +1,13 @@
+# Capacitor 原生平台（自动生成，可提交到 git）
+ios/App/App/public/
+ios/App/Pods/
+ios/DerivedData/
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/.idea/
+
+# 图标生成产物（由 npm run icons 生成，建议提交到 git）
+# resources/icon.png
+# public/icons/icon-192.png

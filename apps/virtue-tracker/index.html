@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="富兰克林式美德训练 — 每周专注一项习惯，日拱一卒" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="美德训练" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <title>美德训练 · Virtue Tracker</title>
+    <style>
+      html, body { margin: 0; background: #ffffff; color: #37352f; min-height: 100%; }
+      #root {
+        min-height: 100dvh;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .boot-loading {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: -apple-system, "PingFang SC", sans-serif;
+      }
+      .boot-loading__title { font-size: 1.25rem; color: #37352f; font-weight: 700; letter-spacing: -0.02em; }
+      .boot-loading__hint { font-size: 0.875rem; color: #9b9a97; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot-loading">
+        <div class="boot-loading__title">美德训练</div>
+        <div class="boot-loading__hint">加载中…</div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

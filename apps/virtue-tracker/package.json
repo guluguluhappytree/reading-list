@@ -1,0 +1,46 @@
+{
+  "name": "virtue-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && node --import tsx ../../node_modules/vite/bin/vite.js build",
+    "preview": "vite preview",
+    "icons": "node scripts/generate-icons.mjs",
+    "build:mobile": "npm run icons && npm run build && npx cap sync",
+    "cap:sync": "npx cap sync",
+    "ios": "npm run build:mobile && npx cap open ios",
+    "android": "npm run build:mobile && npx cap open android",
+    "ios:run": "npm run build:mobile && npx cap run ios",
+    "android:run": "npm run build:mobile && npx cap run android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/app": "^7.0.1",
+    "@capacitor/core": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
+    "@capacitor/splash-screen": "^7.0.1",
+    "@capacitor/status-bar": "^7.0.1",
+    "lifestyle-sync": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.2.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "sharp": "^0.33.5",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vite-plugin-pwa": "^0.21.1"
+  },
+  "capacitor": {
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  }
+}

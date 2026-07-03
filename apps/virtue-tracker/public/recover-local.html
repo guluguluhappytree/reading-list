@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>美德训练 · 本地数据抢救</title>
+    <style>
+      body { font-family: -apple-system, "PingFang SC", sans-serif; margin: 16px; line-height: 1.6; }
+      pre { background: #f5f5f5; padding: 12px; overflow: auto; font-size: 12px; }
+      button { margin: 8px 8px 8px 0; padding: 10px 16px; font-size: 16px; }
+      .ok { color: #0f7b6c; }
+      .bad { color: #d44c47; }
+    </style>
+  </head>
+  <body>
+    <h1>本地数据抢救</h1>
+    <p id="status">正在读取…</p>
+    <button id="download" hidden>下载备份 JSON</button>
+    <button id="copy" hidden>复制 JSON</button>
+    <pre id="preview"></pre>
+    <script>
+      const KEY = "virtue-tracker-state-v1";
+      const raw = localStorage.getItem(KEY);
+      const status = document.getElementById("status");
+      const preview = document.getElementById("preview");
+      const downloadBtn = document.getElementById("download");
+      const copyBtn = document.getElementById("copy");
+
+      if (!raw) {
+        status.innerHTML = '<span class="bad">本设备 localStorage 里没有美德训练数据。</span>';
+      } else {
+        try {
+          const data = JSON.parse(raw);
+          const habits = Array.isArray(data.habits) ? data.habits.length : 0;
+          const history = Array.isArray(data.weekHistory) ? data.weekHistory.length : 0;
+          const setup = !!data.setupComplete;
+          status.innerHTML =
+            habits > 0 || history > 0
+              ? `<span class="ok">找到本地数据：习惯 ${habits} 项，历史周次 ${history} 条，setupComplete=${setup}</span>`
+              : '<span class="bad">有缓存但几乎是空的（可能已被同步覆盖）。</span>';
+          preview.textContent = JSON.stringify(data, null, 2);
+          if (habits > 0 || history > 0) {
+            downloadBtn.hidden = false;
+            copyBtn.hidden = false;
+            downloadBtn.onclick = () => {
+              const blob = new Blob([JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), source: "virtue-tracker", payload: data }, null, 2)], { type: "application/json" });
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(blob);
+              a.download = "virtue-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+              a.click();
+            };
+            copyBtn.onclick = async () => {
+              await navigator.clipboard.writeText(raw);
+              alert("已复制，请发给助手恢复");
+            };
+          }
+        } catch (e) {
+          status.textContent = "数据损坏：" + e.message;
+        }
+      }
+    </script>
+  </body>
+</html>

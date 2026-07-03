@@ -1,0 +1,8 @@
+{
+  "installCommand": "cd ../.. && npm install",
+  "buildCommand": "cd ../.. && npm run icons -w virtue-tracker && npm run build -w virtue-tracker",
+  "outputDirectory": "dist",
+  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false
+}
