@@ -80,7 +80,10 @@ export default function App() {
           {multi ? "每日打卡" : (habit?.name ?? "美德训练")}
         </h1>
         <p className="app-header__subtitle">
-          {page === "daily" && `${today.slice(5).replace("-", "月")}日 · 今日记录`}
+          {page === "daily" &&
+            (multi
+              ? "多轨并行 · 点击格子打卡"
+              : `${today.slice(5).replace("-", "月")}日 · 本周专注一项`)}
           {page === "weekly" && "本周成果一览"}
           {page === "history" && "所有过往记录汇总"}
         </p>

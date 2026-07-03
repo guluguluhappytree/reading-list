@@ -1,8 +1,6 @@
 import type { AppState } from "../types";
 import { MultiWeekGrid } from "../components/MultiWeekGrid";
 import {
-  countMultiDayProgress,
-  countMultiWeekStats,
   formatDate,
   getCurrentHabit,
   getDisplayDate,
@@ -11,7 +9,6 @@ import {
   isFutureDate,
   isMultiMode,
   isToday,
-  multiWeekSuccessRate,
 } from "../utils";
 import { StatusBadge } from "../components/StatusBadge";
 
@@ -28,51 +25,9 @@ export function DailyPage({ state, onRecord }: DailyPageProps) {
 }
 
 function MultiDailyPage({ state, onRecord }: DailyPageProps) {
-  const today = formatDate(new Date());
-  const { dayOfWeek, totalDays } = getWeekProgress(state);
-  const progress = countMultiDayProgress(state, today);
-  const stats = countMultiWeekStats(state);
-  const rate = multiWeekSuccessRate(state);
-
   return (
-    <div className="daily-page fade-in stack">
-      <div className="card card--highlight" style={{ textAlign: "left" }}>
-        <div style={{ marginBottom: 12 }}>
-          <span className="badge badge--gold">多轨并行</span>
-          <span className="badge badge--cycle" style={{ marginLeft: 6 }}>
-            第 {state.cycleNumber} 轮 · 第 {dayOfWeek}/{totalDays} 天
-          </span>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 12 }}>
-          <div>
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(1.25rem, 5vw, 1.5rem)",
-                fontWeight: 700,
-                color: "var(--text-primary)",
-                lineHeight: 1.25,
-                marginBottom: 4,
-              }}
-            >
-              {getDisplayDate(today)}
-            </h2>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-              今日 {progress.done}/{progress.total} · 本周完成率 {stats.success + stats.fail > 0 ? `${rate}%` : "—"}
-            </p>
-          </div>
-        </div>
-        <div className="progress-bar">
-          <div
-            className="progress-bar__fill"
-            style={{
-              width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%`,
-            }}
-          />
-        </div>
-      </div>
-
-      <MultiWeekGrid state={state} onRecord={onRecord} title="每日明细" interactive />
+    <div className="daily-page fade-in">
+      <MultiWeekGrid state={state} onRecord={onRecord} title="每日明细" interactive compactGoals />
     </div>
   );
 }

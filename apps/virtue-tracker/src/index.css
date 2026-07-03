@@ -304,9 +304,11 @@ textarea {
 }
 
 .status-icon--pending {
-  background: var(--bg-elevated);
+  background: transparent;
   color: var(--text-muted);
   border: 1px dashed var(--border-strong);
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 .progress-bar {
@@ -381,6 +383,15 @@ textarea {
   .app-main {
     padding: 12px;
   }
+}
+
+.multi-week-grid {
+  padding: 16px 14px;
+}
+
+.multi-week-grid .section-title {
+  margin-bottom: 14px;
+  font-size: 0.9375rem;
 }
 
 .multi-week-grid__scroll {

@@ -10,7 +10,7 @@ interface SetupPageProps {
 export function SetupPage({ onComplete }: SetupPageProps) {
   const [trackingMode, setTrackingMode] = useState<TrackingMode>("multi");
   const [habits, setHabits] = useState<Habit[]>(() =>
-    LIFESTYLE_FIVE_HABITS.map((v) => ({ ...v, id: createId() })),
+    DAILY_FOUR_GOALS.map((v) => ({ ...v, id: createId() })),
   );
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
@@ -149,16 +149,16 @@ export function SetupPage({ onComplete }: SetupPageProps) {
         <button
           className="btn btn--ghost btn--block"
           style={{ fontSize: "0.8125rem", padding: "10px 12px" }}
-          onClick={loadLifestyleFive}
+          onClick={loadDailyFour}
         >
-          载入生活五习惯（早睡 / 早起 / 阅读 / 少刷手机 / 运动）
+          载入每日四目标（学习 / 产品 / 内容 / 复盘）
         </button>
         <button
           className="btn btn--ghost btn--block"
           style={{ fontSize: "0.8125rem", padding: "10px 12px" }}
-          onClick={loadDailyFour}
+          onClick={loadLifestyleFive}
         >
-          载入每日四目标（学习 / 产品 / 内容 / 复盘）
+          载入生活五习惯（早睡 / 早起 / 阅读 / 少刷手机 / 运动）
         </button>
         <button
           className="btn btn--ghost btn--block"

@@ -13,6 +13,8 @@ interface MultiWeekGridProps {
   onRecord?: (date: string, status: DayStatus, habitId: string) => void;
   title?: string;
   interactive?: boolean;
+  /** 仅显示「1h 学习」式主标签，不显示副说明 */
+  compactGoals?: boolean;
 }
 
 export function MultiWeekGrid({
@@ -20,6 +22,7 @@ export function MultiWeekGrid({
   onRecord,
   title = "每日明细",
   interactive = true,
+  compactGoals = false,
 }: MultiWeekGridProps) {
   return (
     <div className="card multi-week-grid">
@@ -48,7 +51,7 @@ export function MultiWeekGrid({
               <tr key={habit.id}>
                 <td className="multi-week-grid__goal">
                   <span className="multi-week-grid__goal-name">{formatHabitLabel(habit)}</span>
-                  {habit.description && (
+                  {!compactGoals && habit.description && (
                     <span className="multi-week-grid__goal-desc">{habit.description}</span>
                   )}
                 </td>
@@ -85,7 +88,7 @@ export function MultiWeekGrid({
           </tbody>
         </table>
       </div>
-      {interactive && (
+      {interactive && !compactGoals && (
         <p className="multi-week-grid__hint">点击格子切换：未记录 → ✓ → ✗ → 未记录</p>
       )}
     </div>

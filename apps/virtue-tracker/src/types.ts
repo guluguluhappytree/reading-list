@@ -67,7 +67,7 @@ export const DAILY_FOUR_GOALS: Omit<Habit, "id">[] = [
   },
   {
     name: "产品",
-    description: "儿童故事、AI 工具或其他产品",
+    description: "儿童故事、AI 工具等",
     targetHours: 2,
   },
   {
