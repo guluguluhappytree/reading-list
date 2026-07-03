@@ -58,7 +58,7 @@ export const TRACKING_MODE_LABELS: Record<TrackingMode, string> = {
   multi: "多轨并行 · 每日全打卡",
 };
 
-/** 每日四件事模板 */
+/** 每日四件事模板（工作向） */
 export const DAILY_FOUR_GOALS: Omit<Habit, "id">[] = [
   {
     name: "学习",
@@ -80,6 +80,15 @@ export const DAILY_FOUR_GOALS: Omit<Habit, "id">[] = [
     description: "数据、收入、问题、第二天计划",
     targetHours: 1,
   },
+];
+
+/** 生活五习惯模板 */
+export const LIFESTYLE_FIVE_HABITS: Omit<Habit, "id">[] = [
+  { name: "早睡", description: "晚上 10 点前" },
+  { name: "早起", description: "早上 6 点前" },
+  { name: "早起阅读", description: "1 小时", targetHours: 1 },
+  { name: "少刷手机", description: "少于 2 小时", targetHours: 2 },
+  { name: "每天运动", description: "30 分钟以上" },
 ];
 
 export const FRANKLIN_VIRTUES: Omit<Habit, "id">[] = [

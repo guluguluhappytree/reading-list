@@ -23,6 +23,7 @@ export default function App() {
     addHabit,
     removeHabit,
     updateHabit,
+    applyHabitTemplate,
   } = useAppStore();
   const [page, setPage] = useState<Page>("daily");
 
@@ -76,7 +77,7 @@ export default function App() {
             : `第 ${state.cycleNumber} 轮 · 第 ${state.currentHabitIndex + 1} 项`}
         </div>
         <h1 className="app-header__title">
-          {multi ? "每日四件事" : (habit?.name ?? "美德训练")}
+          {multi ? "每日打卡" : (habit?.name ?? "美德训练")}
         </h1>
         <p className="app-header__subtitle">
           {page === "daily" && `${today.slice(5).replace("-", "月")}日 · 今日记录`}
@@ -97,6 +98,7 @@ export default function App() {
             onGraduate={graduate}
             onReset={resetApp}
             onRestoreBackup={restoreBackup}
+            onApplyTemplate={applyHabitTemplate}
           />        )}
       </main>
 

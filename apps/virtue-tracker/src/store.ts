@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { AppState, DayStatus, Habit, TrackingMode } from "./types";
 import { STORAGE_KEY } from "./types";
+import { createId } from "./lib/id";
 import {
   createMultiWeekRecords,
   createMultiWeekSession,
@@ -419,6 +420,28 @@ export function useAppStore() {
     [setState],
   );
 
+  const applyHabitTemplate = useCallback(
+    (templates: Omit<Habit, "id">[]) => {
+      setState((prev) => {
+        const synced = ensureWeekForToday(prev);
+        const habits = templates.map((t) => ({ ...t, id: createId() }));
+        return {
+          ...synced,
+          habits,
+          trackingMode: "multi" as TrackingMode,
+          graduated: false,
+          setupComplete: true,
+          currentHabitIndex: 0,
+          multiWeekRecords: createMultiWeekRecords(
+            synced.weekStartDate,
+            habits.map((h) => h.id),
+          ),
+        };
+      });
+    },
+    [setState],
+  );
+
   return {
     state,
     setupHabits,
@@ -431,5 +454,6 @@ export function useAppStore() {
     addHabit,
     removeHabit,
     updateHabit,
+    applyHabitTemplate,
   };
 }

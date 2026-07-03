@@ -11,3 +11,5 @@ android/.idea/
 # 图标生成产物（由 npm run icons 生成，建议提交到 git）
 # resources/icon.png
 # public/icons/icon-192.png
+.vercel
+.env*

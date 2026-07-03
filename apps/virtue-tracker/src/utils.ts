@@ -183,6 +183,17 @@ export function countSessionStats(session: WeekSession): { success: number; fail
   return countStatus(session.records);
 }
 
+export function formatHabitLabel(habit: { name: string; targetHours?: number }): string {
+  if (habit.targetHours) return `${habit.targetHours}h ${habit.name}`;
+  return habit.name;
+}
+
+export function cycleDayStatus(status: DayStatus): DayStatus {
+  if (status === null) return "success";
+  if (status === "success") return "fail";
+  return null;
+}
+
 export function getCurrentHabit(state: AppState) {
   return state.habits[state.currentHabitIndex] ?? null;
 }

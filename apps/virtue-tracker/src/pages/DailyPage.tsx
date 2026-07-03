@@ -1,21 +1,23 @@
 import type { AppState } from "../types";
-import { StatusBadge } from "../components/StatusBadge";
+import { MultiWeekGrid } from "../components/MultiWeekGrid";
 import {
   countMultiDayProgress,
+  countMultiWeekStats,
   formatDate,
   getCurrentHabit,
   getDisplayDate,
   getDayLabel,
-  getMultiStatus,
   getWeekProgress,
   isFutureDate,
   isMultiMode,
   isToday,
+  multiWeekSuccessRate,
 } from "../utils";
+import { StatusBadge } from "../components/StatusBadge";
 
 interface DailyPageProps {
   state: AppState;
-  onRecord: (date: string, status: "success" | "fail", habitId?: string) => void;
+  onRecord: (date: string, status: "success" | "fail" | null, habitId?: string) => void;
 }
 
 export function DailyPage({ state, onRecord }: DailyPageProps) {
@@ -29,6 +31,8 @@ function MultiDailyPage({ state, onRecord }: DailyPageProps) {
   const today = formatDate(new Date());
   const { dayOfWeek, totalDays } = getWeekProgress(state);
   const progress = countMultiDayProgress(state, today);
+  const stats = countMultiWeekStats(state);
+  const rate = multiWeekSuccessRate(state);
 
   return (
     <div className="daily-page fade-in stack">
@@ -39,21 +43,25 @@ function MultiDailyPage({ state, onRecord }: DailyPageProps) {
             第 {state.cycleNumber} 轮 · 第 {dayOfWeek}/{totalDays} 天
           </span>
         </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(1.5rem, 6vw, 2rem)",
-            fontWeight: 700,
-            color: "var(--text-primary)",
-            lineHeight: 1.25,
-            marginBottom: 8,
-          }}
-        >
-          今日四件事
-        </h2>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.9375rem" }}>
-          {getDisplayDate(today)} · 已打卡 {progress.done}/{progress.total}
-        </p>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 12 }}>
+          <div>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.25rem, 5vw, 1.5rem)",
+                fontWeight: 700,
+                color: "var(--text-primary)",
+                lineHeight: 1.25,
+                marginBottom: 4,
+              }}
+            >
+              {getDisplayDate(today)}
+            </h2>
+            <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+              今日 {progress.done}/{progress.total} · 本周完成率 {stats.success + stats.fail > 0 ? `${rate}%` : "—"}
+            </p>
+          </div>
+        </div>
         <div className="progress-bar">
           <div
             className="progress-bar__fill"
@@ -64,79 +72,7 @@ function MultiDailyPage({ state, onRecord }: DailyPageProps) {
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {state.habits.map((habit) => {
-          const status = getMultiStatus(state, today, habit.id);
-          return (
-            <div key={habit.id} className="card">
-              <div style={{ marginBottom: 12 }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontWeight: 700, fontSize: "1.125rem" }}>
-                    {habit.targetHours ? `${habit.targetHours}h · ${habit.name}` : habit.name}
-                  </span>
-                  <StatusBadge status={status} size="sm" />
-                </div>
-                {habit.description && (
-                  <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{habit.description}</p>
-                )}
-              </div>
-              <div style={{ display: "flex", gap: 12 }}>
-                <button
-                  className={`btn btn--success ${status === "success" ? "active" : ""}`}
-                  style={{ flex: 1, padding: "16px 12px", fontSize: "1rem" }}
-                  onClick={() => onRecord(today, "success", habit.id)}
-                >
-                  ✓ 做到了
-                </button>
-                <button
-                  className={`btn btn--fail ${status === "fail" ? "active" : ""}`}
-                  style={{ flex: 1, padding: "16px 12px", fontSize: "1rem" }}
-                  onClick={() => onRecord(today, "fail", habit.id)}
-                >
-                  ✗ 没做到
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="card">
-        <div className="section-title">本周其他日期</div>
-        <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 6 }}>
-          {state.multiWeekRecords.map((record) => {
-            const future = isFutureDate(record.date);
-            const todayFlag = isToday(record.date);
-            const dayProgress = countMultiDayProgress(state, record.date);
-            return (
-              <li
-                key={record.date}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  padding: "10px 12px",
-                  borderRadius: "var(--radius-sm)",
-                  background: todayFlag ? "var(--highlight-bg)" : "transparent",
-                  border: todayFlag ? "1px solid var(--border)" : "1px solid transparent",
-                  opacity: future ? 0.45 : 1,
-                }}
-              >
-                <span style={{ minWidth: 72, fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-                  周{getDayLabel(record.date)}
-                  {todayFlag && (
-                    <span style={{ color: "var(--accent)", marginLeft: 4, fontSize: "0.75rem" }}>今</span>
-                  )}
-                </span>
-                <span style={{ flex: 1, fontSize: "0.875rem" }}>{getDisplayDate(record.date)}</span>
-                <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
-                  {dayProgress.done}/{dayProgress.total}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <MultiWeekGrid state={state} onRecord={onRecord} title="每日明细" interactive />
     </div>
   );
 }

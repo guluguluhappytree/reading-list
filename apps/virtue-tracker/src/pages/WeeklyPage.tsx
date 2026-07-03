@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { AppState } from "../types";
+import { MultiWeekGrid } from "../components/MultiWeekGrid";
 import { StatusBadge } from "../components/StatusBadge";
 import {
   countMultiWeekStats,
@@ -85,37 +86,7 @@ function MultiWeeklyPage({ state, onAdvanceWeek }: WeeklyPageProps) {
         </div>
       </div>
 
-      <div className="card">
-        <div className="section-title">每日明细</div>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8125rem" }}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left", padding: "8px 4px", color: "var(--text-muted)" }}>目标</th>
-                {state.multiWeekRecords.map((r) => (
-                  <th key={r.date} style={{ textAlign: "center", padding: "8px 2px", color: "var(--text-muted)", minWidth: 36 }}>
-                    周{getDayLabel(r.date)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {state.habits.map((habit) => (
-                <tr key={habit.id}>
-                  <td style={{ padding: "8px 4px", fontWeight: 600 }}>
-                    {habit.targetHours ? `${habit.targetHours}h ${habit.name}` : habit.name}
-                  </td>
-                  {state.multiWeekRecords.map((r) => (
-                    <td key={r.date} style={{ textAlign: "center", padding: "6px 2px" }}>
-                      <StatusBadge status={r.statuses[habit.id] ?? null} size="sm" />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <MultiWeekGrid state={state} title="每日明细" interactive={false} />
 
       <div className="card">
         <div className="section-title">本周信息</div>

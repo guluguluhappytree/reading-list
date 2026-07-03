@@ -1,6 +1,6 @@
 import { useState, type CSSProperties } from "react";
 import type { Habit, TrackingMode } from "../types";
-import { DAILY_FOUR_GOALS, FRANKLIN_VIRTUES, TRACKING_MODE_LABELS } from "../types";
+import { DAILY_FOUR_GOALS, FRANKLIN_VIRTUES, LIFESTYLE_FIVE_HABITS, TRACKING_MODE_LABELS } from "../types";
 import { createId } from "../lib/id";
 
 interface SetupPageProps {
@@ -10,7 +10,7 @@ interface SetupPageProps {
 export function SetupPage({ onComplete }: SetupPageProps) {
   const [trackingMode, setTrackingMode] = useState<TrackingMode>("multi");
   const [habits, setHabits] = useState<Habit[]>(() =>
-    DAILY_FOUR_GOALS.map((v) => ({ ...v, id: createId() })),
+    LIFESTYLE_FIVE_HABITS.map((v) => ({ ...v, id: createId() })),
   );
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
@@ -64,6 +64,11 @@ export function SetupPage({ onComplete }: SetupPageProps) {
     setHabits(FRANKLIN_VIRTUES.map((v) => ({ ...v, id: createId() })));
   };
 
+  const loadLifestyleFive = () => {
+    setTrackingMode("multi");
+    setHabits(LIFESTYLE_FIVE_HABITS.map((v) => ({ ...v, id: createId() })));
+  };
+
   const loadDailyFour = () => {
     setTrackingMode("multi");
     setHabits(DAILY_FOUR_GOALS.map((v) => ({ ...v, id: createId() })));
@@ -108,7 +113,7 @@ export function SetupPage({ onComplete }: SetupPageProps) {
               <div style={{ fontSize: "0.8125rem", opacity: 0.85, marginTop: 4 }}>
                 {mode === "franklin"
                   ? "一次只练一项，适合深度养成单一美德"
-                  : "每天四项一起打卡，适合日常节奏管理"}
+                  : "每天多项一起打卡，适合日常节奏管理"}
               </div>
             </button>
           ))}
@@ -141,6 +146,13 @@ export function SetupPage({ onComplete }: SetupPageProps) {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <button
+          className="btn btn--ghost btn--block"
+          style={{ fontSize: "0.8125rem", padding: "10px 12px" }}
+          onClick={loadLifestyleFive}
+        >
+          载入生活五习惯（早睡 / 早起 / 阅读 / 少刷手机 / 运动）
+        </button>
         <button
           className="btn btn--ghost btn--block"
           style={{ fontSize: "0.8125rem", padding: "10px 12px" }}
