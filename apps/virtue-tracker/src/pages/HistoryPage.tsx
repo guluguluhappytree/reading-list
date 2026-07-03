@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { AppState, Habit, WeekSession } from "../types";
-import { DAILY_FOUR_GOALS, LIFESTYLE_FIVE_HABITS } from "../types";
+import { ALL_MULTI_HABITS, DAILY_FOUR_GOALS, LIFESTYLE_FIVE_HABITS } from "../types";
 import { WeekSessionList } from "../components/WeekSessionList";
 import { downloadBackup, parseBackupFile } from "../lib/backup";
 import {
@@ -37,7 +37,7 @@ export function HistoryPage({
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showImportConfirm, setShowImportConfirm] = useState(false);
   const [showTemplateConfirm, setShowTemplateConfirm] = useState<
-    "daily-four" | "lifestyle-five" | null
+    "all-nine" | "daily-four" | "lifestyle-five" | null
   >(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
@@ -149,31 +149,42 @@ export function HistoryPage({
       <div className="card" style={{ marginBottom: 20 }}>
         <div className="section-title">恢复习惯模板</div>
         <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
-          两套模板互斥，载入后会切换为<strong>多轨并行</strong>网格打卡。历史周次保留，本周格子会重置。
+          载入后切换为<strong>多轨并行</strong>，首页显示习惯数 × 7 天网格，每项每天独立打卡。历史周次保留，本周格子会重置。
         </p>
         {showTemplateConfirm === null ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <button
               type="button"
+              className="btn btn--primary btn--block"
+              onClick={() => setShowTemplateConfirm("all-nine")}
+            >
+              载入全部 9 项（四目标 + 五习惯）
+            </button>
+            <button
+              type="button"
               className="btn btn--ghost btn--block"
               onClick={() => setShowTemplateConfirm("daily-four")}
             >
-              载入每日四目标（1h 学习 / 2h 产品 / 2h 内容 / 1h 复盘）
+              仅载入每日四目标
             </button>
             <button
               type="button"
               className="btn btn--ghost btn--block"
               onClick={() => setShowTemplateConfirm("lifestyle-five")}
             >
-              载入生活五习惯（早睡 / 早起 / 阅读 / 少刷手机 / 运动）
+              仅载入生活五习惯
             </button>
           </div>
         ) : (
           <div className="card" style={{ borderColor: "var(--accent)" }}>
             <p style={{ fontSize: "0.875rem", marginBottom: 16, color: "var(--text-secondary)" }}>
               确认载入
-              {showTemplateConfirm === "daily-four" ? "每日四目标" : "生活五习惯"}？将替换当前{" "}
-              {state.habits.length} 项习惯，本周打卡记录清空。
+              {showTemplateConfirm === "all-nine"
+                ? "全部 9 项（四目标 + 五习惯）"
+                : showTemplateConfirm === "daily-four"
+                  ? "每日四目标"
+                  : "生活五习惯"}
+              ？将替换当前 {state.habits.length} 项习惯，本周打卡记录清空。
             </p>
             <div style={{ display: "flex", gap: 8 }}>
               <button
@@ -181,9 +192,13 @@ export function HistoryPage({
                 className="btn btn--primary"
                 style={{ flex: 1 }}
                 onClick={() => {
-                  onApplyTemplate(
-                    showTemplateConfirm === "daily-four" ? DAILY_FOUR_GOALS : LIFESTYLE_FIVE_HABITS,
-                  );
+                  const templates =
+                    showTemplateConfirm === "all-nine"
+                      ? ALL_MULTI_HABITS
+                      : showTemplateConfirm === "daily-four"
+                        ? DAILY_FOUR_GOALS
+                        : LIFESTYLE_FIVE_HABITS;
+                  onApplyTemplate(templates);
                   setShowTemplateConfirm(null);
                 }}
               >

@@ -1,6 +1,6 @@
 import { useState, type CSSProperties } from "react";
 import type { Habit, TrackingMode } from "../types";
-import { DAILY_FOUR_GOALS, FRANKLIN_VIRTUES, LIFESTYLE_FIVE_HABITS, TRACKING_MODE_LABELS } from "../types";
+import { ALL_MULTI_HABITS, DAILY_FOUR_GOALS, FRANKLIN_VIRTUES, LIFESTYLE_FIVE_HABITS, TRACKING_MODE_LABELS } from "../types";
 import { createId } from "../lib/id";
 
 interface SetupPageProps {
@@ -10,7 +10,7 @@ interface SetupPageProps {
 export function SetupPage({ onComplete }: SetupPageProps) {
   const [trackingMode, setTrackingMode] = useState<TrackingMode>("multi");
   const [habits, setHabits] = useState<Habit[]>(() =>
-    DAILY_FOUR_GOALS.map((v) => ({ ...v, id: createId() })),
+    ALL_MULTI_HABITS.map((v) => ({ ...v, id: createId() })),
   );
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
@@ -62,6 +62,11 @@ export function SetupPage({ onComplete }: SetupPageProps) {
   const loadFranklin = () => {
     setTrackingMode("franklin");
     setHabits(FRANKLIN_VIRTUES.map((v) => ({ ...v, id: createId() })));
+  };
+
+  const loadAllMulti = () => {
+    setTrackingMode("multi");
+    setHabits(ALL_MULTI_HABITS.map((v) => ({ ...v, id: createId() })));
   };
 
   const loadLifestyleFive = () => {
@@ -149,16 +154,23 @@ export function SetupPage({ onComplete }: SetupPageProps) {
         <button
           className="btn btn--ghost btn--block"
           style={{ fontSize: "0.8125rem", padding: "10px 12px" }}
+          onClick={loadAllMulti}
+        >
+          载入全部 9 项（四目标 + 五习惯 · 多轨网格打卡）
+        </button>
+        <button
+          className="btn btn--ghost btn--block"
+          style={{ fontSize: "0.8125rem", padding: "10px 12px" }}
           onClick={loadDailyFour}
         >
-          载入每日四目标（学习 / 产品 / 内容 / 复盘）
+          仅载入每日四目标（学习 / 产品 / 内容 / 复盘）
         </button>
         <button
           className="btn btn--ghost btn--block"
           style={{ fontSize: "0.8125rem", padding: "10px 12px" }}
           onClick={loadLifestyleFive}
         >
-          载入生活五习惯（早睡 / 早起 / 阅读 / 少刷手机 / 运动）
+          仅载入生活五习惯（早睡 / 早起 / 阅读 / 少刷手机 / 运动）
         </button>
         <button
           className="btn btn--ghost btn--block"

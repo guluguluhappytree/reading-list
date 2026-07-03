@@ -91,6 +91,12 @@ export const LIFESTYLE_FIVE_HABITS: Omit<Habit, "id">[] = [
   { name: "每天运动", description: "30 分钟以上" },
 ];
 
+/** 四目标 + 五习惯，多轨并行同时打卡（9 行 × 7 列） */
+export const ALL_MULTI_HABITS: Omit<Habit, "id">[] = [
+  ...DAILY_FOUR_GOALS,
+  ...LIFESTYLE_FIVE_HABITS,
+];
+
 export const FRANKLIN_VIRTUES: Omit<Habit, "id">[] = [
   { name: "节制", description: "食不过饱，饮不过量" },
   { name: "沉默", description: "言必有益，避免闲谈" },
