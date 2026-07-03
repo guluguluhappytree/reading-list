@@ -462,9 +462,10 @@ export function HistoryPage({
       </div>
 
       <div className="card" style={{ marginTop: 24 }}>
-        <div className="section-title">本地备份</div>
+        <div className="section-title">数据备份</div>
         <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
-          数据保存在本机。换手机或重装前，请先导出 JSON 备份文件。
+          打卡数据保存在本机，App 更新不会主动删除。点击右上角 ☁ 登录后可自动云备份；也可手动导出 JSON 文件。
+          <strong> 注意：载入习惯模板只会清空本周格子，不会删除历史周次。</strong>
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <button type="button" className="btn btn--ghost btn--block" onClick={() => downloadBackup(state)}>

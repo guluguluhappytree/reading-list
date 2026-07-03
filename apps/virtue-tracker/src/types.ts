@@ -52,6 +52,7 @@ export interface AppState {
 export type Page = "daily" | "weekly" | "history";
 
 export const STORAGE_KEY = "virtue-tracker-state-v1";
+export const STORAGE_BACKUP_KEY = `${STORAGE_KEY}-backup`;
 
 export const TRACKING_MODE_LABELS: Record<TrackingMode, string> = {
   franklin: "富兰克林 · 每周一项",

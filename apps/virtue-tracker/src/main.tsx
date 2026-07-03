@@ -1,7 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { AccountButton, SyncProvider } from "lifestyle-sync";
 import App from "./App";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { applyRemotePayload } from "./store";
+import { STORAGE_KEY } from "./types";
 import "./index.css";
 
 async function bootstrap() {
@@ -21,7 +24,10 @@ async function bootstrap() {
   createRoot(root).render(
     <StrictMode>
       <ErrorBoundary>
-        <App />
+        <SyncProvider appKey={STORAGE_KEY} onRemoteData={applyRemotePayload}>
+          <AccountButton />
+          <App />
+        </SyncProvider>
       </ErrorBoundary>
     </StrictMode>,
   );

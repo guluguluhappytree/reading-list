@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import { useCloudPush } from "lifestyle-sync";
 import type { AppState, DayStatus, Habit, TrackingMode } from "./types";
-import { STORAGE_KEY } from "./types";
+import { STORAGE_BACKUP_KEY, STORAGE_KEY } from "./types";
 import { createId } from "./lib/id";
 import {
   createMultiWeekRecords,
@@ -64,23 +65,68 @@ function migrateState(parsed: Partial<AppState>): AppState {
   return base;
 }
 
-function loadState(): AppState {
+function hasMeaningfulData(parsed: Partial<AppState>): boolean {
+  return Boolean(parsed.setupComplete && (parsed.habits?.length ?? 0) > 0);
+}
+
+function parseStoredState(raw: string | null): Partial<AppState> | null {
+  if (!raw) return null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return createInitialState();
-    const parsed = JSON.parse(raw) as Partial<AppState>;
+    return JSON.parse(raw) as Partial<AppState>;
+  } catch {
+    return null;
+  }
+}
+
+function loadState(): AppState {
+  const primary = parseStoredState(localStorage.getItem(STORAGE_KEY));
+  const backup = parseStoredState(localStorage.getItem(STORAGE_BACKUP_KEY));
+
+  let parsed = primary;
+  if ((!parsed || !hasMeaningfulData(parsed)) && backup && hasMeaningfulData(backup)) {
+    parsed = backup;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+    } catch {
+      // ignore
+    }
+  }
+
+  if (!parsed) return createInitialState();
+
+  try {
     return migrateState(parsed);
   } catch {
+    if (backup && backup !== parsed) {
+      try {
+        return migrateState(backup);
+      } catch {
+        // ignore
+      }
+    }
     return createInitialState();
   }
 }
 
 function saveState(state: AppState) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const raw = JSON.stringify(state);
+    localStorage.setItem(STORAGE_KEY, raw);
+    if (hasMeaningfulData(state)) {
+      localStorage.setItem(STORAGE_BACKUP_KEY, raw);
+    }
   } catch {
     // 隐私模式或存储已满时忽略
   }
+}
+
+let applyRemoteState: ((state: AppState) => void) | null = null;
+
+/** 云端拉取后合并到本地（由 SyncProvider 调用） */
+export function applyRemotePayload(payload: unknown) {
+  if (!payload || typeof payload !== "object" || !("habits" in payload)) return;
+  const migrated = maybeAutoAdvanceAll(migrateState(payload as Partial<AppState>));
+  applyRemoteState?.(migrated);
 }
 
 function advanceFranklinWeek(state: AppState, archiveCurrent = true): AppState {
@@ -192,6 +238,18 @@ function ensureWeekForToday(state: AppState): AppState {
 
 export function useAppStore() {
   const [state, setStateRaw] = useState<AppState>(() => maybeAutoAdvanceAll(loadState()));
+
+  useCloudPush(STORAGE_KEY, state);
+
+  useEffect(() => {
+    applyRemoteState = (data) => {
+      setStateRaw(data);
+      saveState(data);
+    };
+    return () => {
+      applyRemoteState = null;
+    };
+  }, []);
 
   const setState = useCallback((updater: AppState | ((prev: AppState) => AppState)) => {
     setStateRaw((prev) => {
