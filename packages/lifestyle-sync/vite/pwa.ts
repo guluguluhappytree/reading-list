@@ -20,6 +20,10 @@ type LifestylePwaOptions = {
   description: string;
   themeColor?: string;
   backgroundColor?: string;
+  /** 独立 PWA 身份，避免与同源/缓存的其他 App 混淆 */
+  manifestId?: string;
+  /** Service Worker 缓存命名空间 */
+  cacheId?: string;
 };
 
 type LifestylePwaPluginOptions = {
@@ -49,6 +53,7 @@ export function lifestylePwa(options: LifestylePwaOptions, pluginOpts: Lifestyle
     injectRegister: "script-defer",
     includeAssets,
     manifest: {
+      ...(options.manifestId ? { id: options.manifestId } : {}),
       name: options.name,
       short_name: options.shortName,
       description: options.description,
@@ -67,6 +72,7 @@ export function lifestylePwa(options: LifestylePwaOptions, pluginOpts: Lifestyle
       ],
     },
     workbox: {
+      ...(options.cacheId ? { cacheId: options.cacheId } : {}),
       globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest,woff2}"],
       navigateFallback: "index.html",
       navigateFallbackDenylist: [/^\/api\//],

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
-  <rect width="512" height="512" rx="112" fill="#FFFFFF"/>
-  <!-- 笔记：钢笔笔尖 -->
-  <g fill="#111111" transform="translate(256, 256) rotate(-40)">
+  <rect width="512" height="512" rx="112" fill="#7C3AED"/>
+  <!-- 灵感笔记：白色钢笔 -->
+  <g fill="#FFFFFF" transform="translate(256, 256) rotate(-40)">
     <path d="M-18 -108 L54 0 L-18 108 L-54 72 L-18 0 L-54 -72 Z"/>
-    <circle cx="-18" cy="24" r="16" fill="#FFFFFF"/>
+    <circle cx="-18" cy="24" r="16" fill="#7C3AED"/>
   </g>
 </svg>
